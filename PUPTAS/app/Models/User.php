@@ -12,15 +12,24 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // Columns that can be filled when creating/updating a user
     protected $fillable = [
         'name',
+        'firstname',
+        'middlename',
+        'lastname',
         'email',
         'password',
+        'birthday',
+        'sex',
+        'contactnumber',
+        'address',
+        'school',
+        'schoolAdd',
+        'schoolyear',
+        'dateGrad',
+        'strand',
+        'track'
     ];
 
     /**
@@ -44,5 +53,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get all uploaded files for this user
+     */
+    public function files()
+    {
+        return $this->hasMany(UserFile::class);
+    }
+
+    /**
+     * Get uploaded file by type
+     */
+    public function fileByType($type)
+    {
+        return $this->files()->where('type', $type)->first();
     }
 }
